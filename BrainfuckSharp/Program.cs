@@ -7,16 +7,22 @@ namespace HelloWorld
     {
         static void Main(string[] args)
         {
-			var bfCode = ">++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.> ++++++[< +++++++++> -] < +.<.++ +.------.--------.>>> ++++[< ++++++++> -] < +.";
-			bfCode = string.Join("", bfCode.Where(w => IsValidBF(w)));
+			Console.WriteLine("BrainfuckSharp");
+			var file = new FileInfo(args[0]);
+			if (!file.Exists)
+            {
+				Console.WriteLine($"File {args[0]} not found.");
+				return;
+			}
 
-			Console.WriteLine($"Interpreting {bfCode}");
+			var bfCode = File.ReadAllText(args[0]);
+
+			Console.WriteLine($"Interpreting file {Path.GetFileName(args[0])}");
+
 			var cells = new int[3000];
 			var currentCell = 0;
+
 			new Interpreter(bfCode).Interpret(ref cells, ref currentCell);
 		}
-
-		
-		private static bool IsValidBF(char letter) => letter == '+' || letter == '-' || letter == '>' || letter == '<' || letter == '.' || letter == ',' || letter == '[' || letter == ']';
 	}
 }
